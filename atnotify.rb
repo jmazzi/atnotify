@@ -26,5 +26,4 @@ twit.replies(conditions).each do |s|
   Post.create(:username => s.user.screen_name, :name => s.user.name, :body => s.text, :last_post_id => s.id)
   body << "#{s.user.name} said: #{s.text} At #{Time.parse(s.created_at).strftime("%I:%M %p %b %d")}\n"
 end
-puts body
 send_mail(config['email'], body) unless body.empty?
