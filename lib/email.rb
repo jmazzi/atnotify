@@ -1,3 +1,5 @@
+require 'escape'
+
 def send_mail(to, message)
   m = Escape.shell_command(message)
   t = Escape.shell_command(to)
