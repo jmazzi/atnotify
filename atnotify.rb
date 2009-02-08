@@ -17,7 +17,7 @@ twit = Twitter::Base.new(config['username'], config['password'])
 post = Post.first(:order => [:last_post_id.desc])
 
 if post
-  conditions = {:since => post.last_post_id}
+  conditions = {:since_id => post.last_post_id}
 else
   conditions = {}
 end
@@ -27,4 +27,4 @@ twit.replies(conditions).each do |s|
   body << "#{s.user.name} said: #{s.text} At #{Time.parse(s.created_at).strftime("%I:%M %p %b %d")}\n"
 end
 puts body
-send_mail(config['email'], body)
+send_mail(config['email'], body) unless body.empty?
