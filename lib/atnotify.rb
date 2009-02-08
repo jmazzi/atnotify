@@ -1,30 +1,25 @@
-require 'rubygems'  
-require 'yaml'  
+$:.unshift(File.dirname(__FILE__))
+require 'rubygems'
+require 'yaml'
 require 'twitter'
-require 'lib/post'
-#/usr/sbin/sendmail -i -t
-def perform_delivery_sendmail(mail)
-  sendmail_args = sendmail_settings[:arguments]
-  sendmail_args += " -f \"#{mail['return-path']}\"" if mail['return-path']
-  IO.popen("#{sendmail_settings[:location]} #{sendmail_args}","w+") do |sm|
-    sm.print(mail.encoded.gsub(/\r/, ''))
-    sm.flush
-  end
-end
-send_email("hh@mailheist.com", "ME", "hh@mailheist.com", "Justin", "test", "message")
+require 'db'
+require 'email'
+require 'escape'
 
-exit
-config = YAML::load(File.open('tweet.yml'))
-twit = Twitter::Base.new(config['username'], config['password'])
+config = YAML::load(File.open("#{ENV['HOME']}/.atnotify.yml"))
+twit = Twitter::Base.new(config['username'], config['password'], :api_host => 'identi.ca/api')
 post = Post.first(:order => [:last_post_id.desc])
+pust twit.rate_limit_status rescue
 
 if post
   conditions = {:since => post.last_post_id}
 else
   conditions = {}
 end
-
+body = ""
 twit.replies(conditions).each do |s|
-  puts s.text
   Post.create(:username => s.user.screen_name, :name => s.user.name, :body => s.text, :last_post_id => s.id)
+  body << "#{s.user.name} said: #{s.text} At #{Time.parse(s.created_at).strftime("%I:%M %p %b %d")}\n"
 end
+puts body
+#send_mail(config['email'], body)
