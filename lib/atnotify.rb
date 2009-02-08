@@ -6,7 +6,14 @@ require 'db'
 require 'email'
 require 'escape'
 
-config = YAML::load(File.open("#{ENV['HOME']}/.atnotify.yml"))
+conf_file = "#{ENV['HOME']}/.atnotify.yml"
+
+unless File.exists?(conf_file)
+  puts "#{conf_file} doesn't exists. Please create it!"
+  exit
+end
+
+config = YAML::load(File.open(conf_file))
 twit = Twitter::Base.new(config['username'], config['password'], :api_host => 'identi.ca/api')
 post = Post.first(:order => [:last_post_id.desc])
 pust twit.rate_limit_status rescue

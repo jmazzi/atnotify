@@ -3,8 +3,8 @@ require 'dm-validations'
 
 # Config
 db = "#{ENV['HOME']}/.atnotify.db"
-DataMapper::Logger.new('db.log', :debug)
-DataMapper.setup(:default, "sqlite3:///#{Dir.pwd}/test.db")
+#DataMapper::Logger.new('db.log', :debug)
+DataMapper.setup(:default, "sqlite3:///#{db}")
 
 # Post
 class Post
@@ -17,4 +17,9 @@ class Post
   
   validates_is_unique :last_post_id
   
+end
+
+# Create the db if it doesn't exist
+unless File.exists?(db)
+  Post.auto_migrate!
 end
