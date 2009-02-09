@@ -1,9 +1,13 @@
+==INSTALL==
+gem sources -a http://gems.github.com
+gem install jmazzi-atnotify
+
+==SETUP==
 Create ~/.atnotify.yml
 
 username: user
 password: password
 email: email@domain.com
 
-
-
-Then you set atnotify to run from cron
+==CRON==
+*/10 * * * * /usr/bin/atnotify
