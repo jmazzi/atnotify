@@ -1,3 +1,4 @@
 tweet.yml
 *.log
 *.db
+*.gem

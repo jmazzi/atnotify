@@ -1,0 +1,9 @@
+Create ~/.atnotify.yml
+
+username: user
+password: password
+email: email@domain.com
+
+
+
+Then you set atnotify to run from cron
