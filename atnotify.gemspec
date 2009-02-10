@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name         = "atnotify"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.date         = "2009-02-07"
   s.summary      = "Sends you an email when someone @replies you on twitter."
   s.email        = "hh@mailheist.com"

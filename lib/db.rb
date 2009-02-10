@@ -12,7 +12,7 @@ class Post
   property :id, Integer, :serial => true
   property :username, String, :index => true
   property :name, String
-  property :body, String
+  property :body, String, :length => 140
   property :last_post_id, String, :index => true
   
   validates_is_unique :last_post_id
